@@ -16,3 +16,5 @@ window.addEventListener("DOMContentLoaded", (event) => {
             });
         }
     });
+
+$('#loader').addClass("hide-loader");

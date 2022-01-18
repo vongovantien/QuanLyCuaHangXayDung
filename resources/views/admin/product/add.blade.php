@@ -25,7 +25,6 @@
                     <option value="Tấn">Tấn</option>
                     <option value="Kg">Kg</option>
                 </select>
-
             </div>
             <div class="form-group">
                 <label for="active">Loại sản phẩm:</label>

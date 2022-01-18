@@ -14,4 +14,9 @@ class Supplier extends Model
         'address',
         'phone',
     ];
+
+    public function order_input()
+    {
+        return $this->hasMany(OrderInput::class);
+    }
 }

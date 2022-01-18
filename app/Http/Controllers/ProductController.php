@@ -2,24 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ExcelExports;
+use App\Exports\ExcelExports as Export;
+use App\Models\ExcelExports as Exmodel;
+use App\Http\Controllers\Exception;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use function redirect;
+use function response;
+use function view;
 
 class ProductController extends Controller
 {
 
-    public function getAllCategory(){
+    public function getAllCategory()
+    {
         return Category::where('active', 1)->get();
     }
-    public function getAllSupplier(){
+
+    public function getAllSupplier()
+    {
         return Supplier::all();
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +42,7 @@ class ProductController extends Controller
         (string)$kw = $request->query('kw');
         (int)$quantity = $request->query('quantity');
         (string)$filter = $request->query('filter');
-        $products = DB::table('products');
+        $products = Product::with('category')->orderByDesc('id');
 
         if ($kw !== null) {
             $products = $products->where('name', 'like', "%$kw%");
@@ -119,7 +130,7 @@ class ProductController extends Controller
             Session::flash('error', 'Tạo mới sản phẩm thất bại' . ' ' . $err->getMessage());
         }
         if ($request->has('back')) {
-            return redirect('admin.product.add');
+            return redirect('admin/products/list');
         }
         return redirect()->back();
     }
@@ -151,7 +162,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::where('id', $id)->first();
+        $product = Product::where('id', $id)->with('category', 'supplier')->first();
         return view('admin.product.detail', [
             'title' => $product['name'],
             'product' => $product,
@@ -165,9 +176,8 @@ class ProductController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        dd($request);
         $messages = [
             'name.required' => 'Bạn phải nhập tên sản phẩm!!',
             'price.required' => 'Bạn phải nhập giá của sản phẩm!!'
@@ -177,12 +187,18 @@ class ProductController extends Controller
             'price' => 'required',
         ], $messages)->validate();
 
+        $product = Product::find($id);
         $filename = "";
-        if ($request->file('image')->isValid()) {
+        if ($request->has('image') && $request->file('image')->isValid()) {
             $filename = $request->image->getClientOriginalName();
+
             $request->image->move('images/', $filename);
         }
-        $product = Product::find($request->id);
+        if ($request->has('image') != null) {
+            if (file_exists(public_path('images/' . $product->images))) {
+                unlink('images/' . $product->images);
+            }
+        }
         try {
             $product->name = $request->name;
             $product->description = $request->description;
@@ -191,11 +207,11 @@ class ProductController extends Controller
             $product->supplier_id = $request->supplier;
             $product->price = $request->price;
             $product->active = $request->active;
-            $product->filename = $filename;
+            $product->images = $filename;
             $product->save();
-            Session::flash('success', 'Sửa sản phẩm thành công');
+            Session::flash('success', 'Cập nhật sản phẩm thành công');
         } catch (\Exception $err) {
-            Session::flash('error', 'Sửa sản phẩm thất bại' . ' ' . $err->getMessage());
+            Session::flash('error', 'Cập nhật sản phẩm thất bại' . ' ' . $err->getMessage());
             redirect()->back();
         }
         return redirect('/admin/products/list');
@@ -223,5 +239,9 @@ class ProductController extends Controller
         } catch (Exception $err) {
             return response()->json(['error' => true]);
         }
+    }
+
+    public function export_csv(){
+        return Excel::download(new Export(), 'product.xlsx');
     }
 }

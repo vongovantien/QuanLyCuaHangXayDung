@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 
-use Illuminate\Contracts\Session\Session;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Request;
+use function view;
 
 class MainController extends Controller
 {
@@ -16,8 +14,8 @@ class MainController extends Controller
      */
     public function index()
     {
-        return view('admin.home', [
-            'title' => 'Trang chủ'
+        return view('admin.main', [
+            'title' => 'Trang chủ',
         ]);
     }
 }

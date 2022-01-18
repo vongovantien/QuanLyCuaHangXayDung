@@ -2,6 +2,8 @@
 <html lang="en">
 @include('admin.header')
 <body class="sb-nav-fixed">
+<div class="loader" id="loader">
+</div>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="index.html">Cons VNVT</a>
@@ -11,7 +13,9 @@
     <!-- Navbar Search-->
     <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         <div class="text-light">
-            Welcome Võ Ngô Văn Tiền
+            @if( auth()->check())
+                {{ auth()->user()->name }}
+            @endif
         </div>
     </div>
     <!-- Navbar-->
@@ -25,7 +29,12 @@
                 <li>
                     <hr class="dropdown-divider"/>
                 </li>
-                <li><a class="dropdown-item" href="#!">Logout</a></li>
+                <li>
+                    <a class="dropdown-item" href="{{ route('logout') }}"> Log out</a>
+                    {{--                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">--}}
+                    {{--                        {{ csrf_field() }}--}}
+                    {{--                    </form>--}}
+                </li>
             </ul>
         </li>
     </ul>
@@ -40,7 +49,6 @@
                     <div class="text-muted">Copyright &copy; Your Website 2021</div>
                     <div>
                         <a href="#">Privacy Policy</a>
-                        &middot;
                         <a href="#">Terms &amp; Conditions</a>
                     </div>
                 </div>

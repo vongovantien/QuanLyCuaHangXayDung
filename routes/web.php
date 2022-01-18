@@ -1,12 +1,15 @@
 <?php
 
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\OrderInputController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,60 +22,75 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('register', [RegistrationController::class, 'create']);
+Route::post('register', [RegistrationController::class, 'store']);
 Route::get('/', [MainController::class, 'index']);
+Route::get('403', function () {
+    return view('admin.403');
+})->name('403');
+Route::get('login', [LoginController::class, 'index'])->name('login');
+Route::post('login', [LoginController::class, 'store']);
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin.access'])->group(function () {
 
-    Route::get('index', [MainController::class, 'index']);
-
-    Route::prefix('products')->group(function () {
-        Route::get('add', [ProductController::class, 'create'])->name('index');
-        Route::post('add', [ProductController::class, 'store'])->name('insert');
-        Route::get('list', [ProductController::class, 'index'])->name('list');
-        Route::post('list', [ProductController::class, 'index']);
-        Route::get('detail/{id}', [ProductController::class, 'show']);
-        Route::get('edit/{id}', [ProductController::class, 'edit']);
-        Route::post('edit/{id}', [ProductController::class, 'update']);
-        Route::DELETE('delete', [ProductController::class, 'destroy']);
-    });
-    Route::prefix('categories')->group(function () {
-        Route::get('add', [CategoryController::class, 'create']);
-        Route::post('add', [CategoryController::class, 'store']);
-        Route::get('list', [CategoryController::class, 'index']);
-        Route::get('edit/{id}', [CategoryController::class, 'show']);
-        Route::post('edit/{id}', [CategoryController::class, 'update']);
-        Route::delete('delete', [CategoryController::class, 'destroy']);
-    });
-    Route::prefix('suppliers')->group(function () {
-        Route::get('add', [SupplierController::class, 'create']);
-        Route::post('add', [SupplierController::class, 'store']);
-        Route::get('list', [SupplierController::class, 'index']);
-        Route::get('edit/{id}', [SupplierController::class, 'show']);
-        Route::post('edit/{id}', [SupplierController::class, 'update']);
-        Route::delete('delete', [SupplierController::class, 'destroy']);
-    });
-    Route::prefix('customers')->group(function () {
-        Route::get('add', [CustomerController::class, 'create']);
-        Route::post('add', [CustomerController::class, 'store']);
-        Route::get('list', [CustomerController::class, 'index']);
-        Route::get('edit/{id}', [CustomerController::class, 'show']);
-        Route::post('edit/{id}', [CustomerController::class, 'update']);
-        Route::delete('delete', [CustomerController::class, 'destroy']);
-    });
-    Route::prefix('orders')->group(function () {
-        Route::get('add', [OrderController::class, 'create']);
-        Route::post('add', [OrderController::class, 'store']);
-        Route::get('list', [OrderController::class, 'index']);
-        Route::get('edit/{id}', [OrderController::class, 'show']);
-        Route::post('edit/{id}', [OrderController::class, 'update']);
-        Route::delete('delete', [OrderController::class, 'destroy']);
-    });
-    Route::prefix('employees')->group(function () {
-        Route::get('add', [EmployeeController::class, 'create']);
-        Route::post('add', [EmployeeController::class, 'store']);
-        Route::get('list', [EmployeeController::class, 'index']);
-        Route::get('edit/{id}', [EmployeeController::class, 'show']);
-        Route::post('edit/{id}', [EmployeeController::class, 'update']);
-        Route::delete('delete', [EmployeeController::class, 'destroy']);
+    Route::prefix('admin')->group(function () {
+        Route::get('index', [MainController::class, 'index']);
+        Route::prefix('products')->group(function () {
+            Route::get('add', [ProductController::class, 'create'])->name('index');
+            Route::post('add', [ProductController::class, 'store'])->name('insert');
+            Route::get('list', [ProductController::class, 'index'])->name('list');
+            Route::post('list', [ProductController::class, 'index']);
+            Route::get('detail/{id}', [ProductController::class, 'show']);
+            Route::get('edit/{id}', [ProductController::class, 'edit']);
+            Route::post('edit/{id}', [ProductController::class, 'update']);
+            Route::delete('delete', [ProductController::class, 'destroy']);
+            Route::get('export', [ProductController::class, 'export_csv'])->name('export');
+        });
+        Route::prefix('categories')->group(function () {
+            Route::get('add', [CategoryController::class, 'create']);
+            Route::post('add', [CategoryController::class, 'store']);
+            Route::get('list', [CategoryController::class, 'index']);
+            Route::get('edit/{id}', [CategoryController::class, 'show']);
+            Route::post('edit/{id}', [CategoryController::class, 'update']);
+            Route::delete('delete', [CategoryController::class, 'destroy']);
+        });
+        Route::prefix('suppliers')->group(function () {
+            Route::get('add', [SupplierController::class, 'create']);
+            Route::post('add', [SupplierController::class, 'store']);
+            Route::get('list', [SupplierController::class, 'index']);
+            Route::get('edit/{id}', [SupplierController::class, 'show']);
+            Route::post('edit/{id}', [SupplierController::class, 'update']);
+            Route::delete('delete', [SupplierController::class, 'destroy']);
+        });
+        Route::prefix('customers')->group(function () {
+            Route::get('add', [CustomerController::class, 'create']);
+            Route::post('add', [CustomerController::class, 'store']);
+            Route::get('list', [CustomerController::class, 'index']);
+            Route::get('edit/{id}', [CustomerController::class, 'show']);
+            Route::post('edit/{id}', [CustomerController::class, 'update']);
+            Route::delete('delete', [CustomerController::class, 'destroy']);
+        });
+        Route::prefix('orders-input')->group(function () {
+            Route::get('add', [OrderInputController::class, 'create']);
+            Route::post('add', [OrderInputController::class, 'store']);
+            Route::get('list', [OrderInputController::class, 'index']);
+            Route::get('edit/{id}', [OrderInputController::class, 'show']);
+            Route::post('edit/{id}', [OrderInputController::class, 'update']);
+            Route::delete('delete', [OrderInputController::class, 'destroy']);
+        });
+        Route::prefix('employees')->group(function () {
+            Route::get('add', [EmployeeController::class, 'create']);
+            Route::post('add', [EmployeeController::class, 'store']);
+            Route::get('list', [EmployeeController::class, 'index']);
+            Route::get('edit/{id}', [EmployeeController::class, 'show']);
+            Route::post('edit/{id}', [EmployeeController::class, 'update']);
+            Route::delete('delete', [EmployeeController::class, 'destroy']);
+        });
+        Route::prefix('users')->group(function () {
+            Route::get('list', [UserController::class, 'index']);
+            Route::get('edit/{id}', [UserController::class, 'edit']);
+            Route::post('edit/{id}', [UserController::class, 'update']);
+        });
     });
 });

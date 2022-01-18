@@ -6,6 +6,8 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use function redirect;
+use function view;
 
 class SupplierController extends Controller
 {

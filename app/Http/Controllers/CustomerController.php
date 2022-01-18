@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
@@ -11,9 +15,42 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        (string)$kw = $request->query('kw');
+        (int)$quantity = $request->query('quantity');
+        (string)$filter = $request->query('filter');
+        $customers = DB::table('customers')->orderByDesc('id');
+
+        if ($kw !== null) {
+            $customers = $customers->where('name', 'like', "%$kw%");
+        }
+        if ($filter !== null) {
+            switch ($filter) {
+                case "date" :
+                    $customers = $customers->orderBy('id');
+                    break;
+                case "date_desc":
+                    $customers = $customers->orderByDesc('id');
+                    break;
+                case "name_desc":
+                    $customers = $customers->orderByDesc('name');
+                    break;
+                default:
+                    $customers = $customers->orderBy('name');
+            }
+        }
+        if ($quantity !== null) {
+            $customers = $customers->paginate($quantity);
+        } else {
+            $customers = $customers->paginate(15);
+        }
+
+
+        return view('admin.customer.list', [
+            'customers' => $customers,
+            'title' => 'Danh sách sản phẩm'
+        ]);
     }
 
     /**
@@ -23,7 +60,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.customer.add', [
+            'title' => 'Thêm sản phẩm mới'
+        ]);
     }
 
     /**
@@ -34,7 +73,25 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Validator::make($request->all(), [
+            'name' => 'required',
+            'address' => 'required'
+        ])->validate();
+
+        try {
+            Customer::create([
+                'name' => $request->name,
+                'address' => $request->address,
+            ]);
+
+            Session::flash('success', 'Tạo mới khách hàng thành công');
+        } catch (\Exception $err) {
+            Session::flash('error', 'Tạo mới khách hàng thất bại' . ' ' . $err->getMessage());
+        }
+        if ($request->has('back')) {
+            return redirect('admin/customers/list');
+        }
+        return redirect()->back();
     }
 
     /**

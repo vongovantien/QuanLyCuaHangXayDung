@@ -56,7 +56,7 @@
                                 <td>{{ $p->id }}</td>
                                 <td>{{ $p->name }}</td>
                                 <td>{{ $p->unit }}</td>
-                                <td>{{ $p->category_id }}</td>
+                                <td>{{ $p->category->name }}</td>
                                 <td>
                                     @if ( $p->active == 1)
                                         Còn hàng
@@ -84,5 +84,6 @@
                 </div>
             </div>
         </div>
+        <a class="btn btn-warning" href="{{ route('export') }}">Export Product Data</a>
     </main>
 @endsection
