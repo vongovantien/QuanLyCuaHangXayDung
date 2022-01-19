@@ -20,4 +20,8 @@ class OrderDetailInput extends Model
     {
         return $this->belongsTo(OrderInput::class, 'order_input_id', 'id');
     }
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
 }

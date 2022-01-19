@@ -3,6 +3,7 @@
     <main>
         <div class="container-fluid px-4">
             <h1 class="mt-4">Danh sách sản phẩm</h1>
+
             <meta name="csrf-token" content="{{ csrf_token() }}"/>
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">Dashboard</li>
@@ -10,10 +11,14 @@
             <form class="py-3">
                 <div class="row">
                     <div class="col-md-3">
+                        <a class="btn btn-warning" href="{{ route('export') }}"><i class="fas fa-download"></i>  Xuất file</a>
+                        <a class="btn btn-warning" href="{{ route('export') }}"><i class="fas fa-upload"></i>  Import file</a>
+                    </div>
+                    <div class="col-md-3">
                         <input class="form-control" value="{{ old('kw') }}" type="text" placeholder="Search for..."
                                name="kw"/>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select class="custom-select" name="quantity">
                             <option value="">Hiển thị</option>
                             <option value="5">5</option>
@@ -32,7 +37,7 @@
                             <option value="name_desc">Sắp xếp tên từ Z - A</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-1">
                         <input class="btn btn-primary" type="submit" value="Filter"/>
                     </div>
                 </div>
@@ -61,7 +66,7 @@
                                     @if ( $p->active == 1)
                                         Còn hàng
                                     @else
-                                        Hết hàng
+                                        <a href="/admin/orders-input/add">Hết hàng</a>
                                     @endif
                                 </td>
                                 <td>
@@ -81,9 +86,11 @@
                         </tbody>
                     </table>
                     {{$products->withQueryString('quantity', 'filter')->links() }}
+
                 </div>
+
+
             </div>
         </div>
-        <a class="btn btn-warning" href="{{ route('export') }}">Export Product Data</a>
     </main>
 @endsection

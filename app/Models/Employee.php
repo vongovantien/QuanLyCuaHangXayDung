@@ -17,6 +17,7 @@ class Employee extends Model
         'description',
         'active'
     ];
+
     public function order_input()
     {
         return $this->hasMany(OrderInput::class);

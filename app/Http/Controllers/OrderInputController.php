@@ -29,7 +29,8 @@ class OrderInputController extends Controller
      */
     public function index()
     {
-        $orders_input = OrderInput::all();
+        $orders_input =  OrderInput::all();
+
         return view('admin.orderinput.list', [
             'orders_input' => $orders_input,
             'title' => 'Danh sách đơn hàng nhập'
@@ -94,7 +95,11 @@ class OrderInputController extends Controller
      */
     public function show($id)
     {
-        //
+        $record = OrderDetailInput::with('product')->where('order_input_id', $id)->get();
+        return view('admin.orderinput.edit', [
+            'record' => $record,
+            'title' => 'Tạo đơn hàng nhập hàng'
+        ]);
     }
 
     /**

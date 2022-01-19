@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -91,6 +92,13 @@ Route::middleware(['auth', 'admin.access'])->group(function () {
             Route::get('list', [UserController::class, 'index']);
             Route::get('edit/{id}', [UserController::class, 'edit']);
             Route::post('edit/{id}', [UserController::class, 'update']);
+        });
+        Route::prefix('report')->group(function () {
+            Route::get('profit-stats', [ReportController::class, 'ProfitStats']);
+            Route::get('month-stats', [ReportController::class, 'MonthStats']);
+            Route::get('quarter-stats', [ReportController::class, 'QuarterStats']);
+            Route::get('product-stats', [ReportController::class, 'CateStats']);
+            Route::post('product-stats', [ReportController::class, 'CateStats']);
         });
     });
 });
