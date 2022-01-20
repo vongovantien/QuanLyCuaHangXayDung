@@ -11,6 +11,9 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ExportController;
+use App\Http\Controllers\ImportController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,8 +26,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('register', [RegistrationController::class, 'create']);
-Route::post('register', [RegistrationController::class, 'store']);
+
 Route::get('/', [MainController::class, 'index']);
 Route::get('403', function () {
     return view('admin.403');
@@ -46,7 +48,7 @@ Route::middleware(['auth', 'admin.access'])->group(function () {
             Route::get('edit/{id}', [ProductController::class, 'edit']);
             Route::post('edit/{id}', [ProductController::class, 'update']);
             Route::delete('delete', [ProductController::class, 'destroy']);
-            Route::get('export', [ProductController::class, 'export_csv'])->name('export');
+
         });
         Route::prefix('categories')->group(function () {
             Route::get('add', [CategoryController::class, 'create']);
@@ -100,5 +102,17 @@ Route::middleware(['auth', 'admin.access'])->group(function () {
             Route::get('product-stats', [ReportController::class, 'CateStats']);
             Route::post('product-stats', [ReportController::class, 'CateStats']);
         });
+
+        Route::get('export-product', [ExportController::class, 'export_product'])->name('export');
+        Route::post('import-product', [ImportController::class, 'import_product'])->name('import');
     });
 });
+
+Route::get('/forgot-password', [LoginController::class, 'getEmail']);
+Route::post('/forgot-password', [LoginController::class, 'postEmail']);
+Route::get('/reset-password/{token}', [LoginController::class, 'getPassword']);
+Route::post('/reset-password', [LoginController::class, 'updatePassword']);
+Route::get('register', [RegistrationController::class, 'create']);
+Route::post('register', [RegistrationController::class, 'store']);
+Route::get('register/verify/{code}', [RegistrationController::class, 'verify']);
+

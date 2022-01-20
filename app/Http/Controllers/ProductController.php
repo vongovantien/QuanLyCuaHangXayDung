@@ -240,8 +240,4 @@ class ProductController extends Controller
             return response()->json(['error' => true]);
         }
     }
-
-    public function export_csv(){
-        return Excel::download(new Export(), 'product.xlsx');
-    }
 }

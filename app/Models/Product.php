@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -13,7 +14,6 @@ class Product extends Model
         'name',
         'description',
         'unit',
-        'origin',
         'category_id',
         'supplier_id',
         'price',
@@ -29,5 +29,9 @@ class Product extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
+    }
+    public static function getProducts(){
+        $record = DB::table('products')->select('id', 'name', 'unit', 'price')->get()->toArray();
+        return $record;
     }
 }
