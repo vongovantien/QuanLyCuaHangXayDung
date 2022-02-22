@@ -28,16 +28,10 @@
                     @endforeach
                 </select>
             </div>
-{{--            <div class="form-group">--}}
-{{--                <label for="role">Vai trò:</label>--}}
-{{--                <select name="role" class="custom-select">--}}
-{{--                    @foreach($roles as $r)--}}
-{{--                        <option value="{{ $r->id }}" {{ $user->role_id == $r->id ? 'selected' : '' }}>--}}
-{{--                            {{ $r->name }}--}}
-{{--                        </option>--}}
-{{--                    @endforeach--}}
-{{--                </select>--}}
-{{--            </div>--}}
+            <div class="custom-control custom-switch py-2">
+                <input type="checkbox" class="custom-control-input" id="switch1" name="confirmed" {{ $user->confirmed == 1 ? 'checked' : '' }} >
+                <label class="custom-control-label" for="switch1">Trạng thái hoạt động</label>
+            </div>
             <button type="submit" class="btn btn-primary">Cập nhật</button>
         </form>
     </div>

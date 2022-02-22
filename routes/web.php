@@ -6,6 +6,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\OrderInputController;
+use App\Http\Controllers\OrderOutputController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\SupplierController;
@@ -48,8 +49,8 @@ Route::middleware(['auth', 'admin.access'])->group(function () {
             Route::get('edit/{id}', [ProductController::class, 'edit']);
             Route::post('edit/{id}', [ProductController::class, 'update']);
             Route::delete('delete', [ProductController::class, 'destroy']);
-
         });
+
         Route::prefix('categories')->group(function () {
             Route::get('add', [CategoryController::class, 'create']);
             Route::post('add', [CategoryController::class, 'store']);
@@ -81,6 +82,14 @@ Route::middleware(['auth', 'admin.access'])->group(function () {
             Route::get('edit/{id}', [OrderInputController::class, 'show']);
             Route::post('edit/{id}', [OrderInputController::class, 'update']);
             Route::delete('delete', [OrderInputController::class, 'destroy']);
+        });
+        Route::prefix('orders-output')->group(function () {
+            Route::get('add', [OrderOutputController::class, 'create']);
+            Route::post('add', [OrderOutputController::class, 'store']);
+            Route::get('list', [OrderOutputController::class, 'index']);
+            Route::get('edit/{id}', [OrderOutputController::class, 'show']);
+            Route::post('edit/{id}', [OrderOutputController::class, 'update']);
+            Route::delete('delete', [OrderOutputController::class, 'destroy']);
         });
         Route::prefix('employees')->group(function () {
             Route::get('add', [EmployeeController::class, 'create']);

@@ -44,9 +44,8 @@
                         <tr>
                             <th>Email</th>
                             <th>Tên người dùng</th>
+                            <th>Chức vụ</th>
                             <th>Trạng thái</th>
-                            <th>Địa chỉ</th>
-                            <th>Số điện thoại</th>
                             <th>Ngày tạo</th>
                         </tr>
                         </thead>
@@ -55,15 +54,13 @@
                             <tr>
                                 <td><a href="/admin/users/edit/{{ $u->id }}">{{ $u->email }}</a></td>
                                 <td>{{ $u->name }}</td>
+                                <td>{{ $u->role->name}}</td>
                                 <td>
-                                    @if ( $u->active == 1)
-                                        Đang hoạt động
+                                    @if ($u->confirmed == 1)
+                                        <p class="text-success">Đang hoạt động</p>
                                     @else
-                                        Chưa hoạt động
-                                    @endif</td>
-                                <td>dịa chi</td>
-                                <td>
-                                    so đt
+                                        <p class="text-danger">Chưa hoạt động</p>
+                                    @endif
                                 </td>
                                 <td>
                                     {{$u->created_at}}

@@ -1,6 +1,5 @@
 @extends('admin.main')
 @section('content')
-
     <div class="container p-5">
         <h3>Thông tin sản phẩm</h3>
         <p>Mã sản phẩm: {{$product->id}}</p>

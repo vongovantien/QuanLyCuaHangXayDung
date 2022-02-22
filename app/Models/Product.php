@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Product extends Model
 {
     use HasFactory;
+
     protected $table = "products";
     protected $fillable = [
         'name',
@@ -26,11 +27,14 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
+
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
     }
-    public static function getProducts(){
+
+    public static function getProducts()
+    {
         $record = DB::table('products')->select('id', 'name', 'unit', 'price')->get()->toArray();
         return $record;
     }

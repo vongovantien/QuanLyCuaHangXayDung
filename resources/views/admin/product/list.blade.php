@@ -1,6 +1,9 @@
 @extends('admin.main')
 @section('content')
     <main>
+        <div class="mt-5">
+        @include('admin.alert')
+        </div>
         <div class="container-fluid px-4">
             <h1 class="mt-4">Danh sách sản phẩm</h1>
             <form method="POST" action="{{ route('import') }}" enctype="multipart/form-data">
@@ -21,8 +24,6 @@
                     <div class="col-md-3">
                         <a class="btn btn-warning" href="{{ route('export') }}"><i class="fas fa-download"></i> Xuất
                             file</a>
-
-
                     </div>
                     <div class="col-md-3">
                         <input class="form-control" value="{{ old('kw') }}" type="text" placeholder="Search for..."
@@ -60,7 +61,6 @@
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
                             <th>Đơn vị tính</th>
-                            <th>Loại sản phẩm</th>
                             <th>Trạng thái</th>
                             <th></th>
                         </tr>
@@ -71,12 +71,12 @@
                                 <td>{{ $p->id }}</td>
                                 <td>{{ $p->name }}</td>
                                 <td>{{ $p->unit }}</td>
-                                <td>{{ $p->category->name }}</td>
+
                                 <td>
                                     @if ( $p->active == 1)
                                         Còn hàng
                                     @else
-                                        <a href="/admin/orders-input/add">Hết hàng</a>
+                                        <a href="/admin/products/add">Hết hàng</a>
                                     @endif
                                 </td>
                                 <td>
@@ -97,7 +97,6 @@
                         </tbody>
                     </table>
                     {{$products->withQueryString('quantity', 'filter')->links() }}
-
                 </div>
 
 

@@ -13,6 +13,7 @@ function deleteRow(id, url) {
             success: function (result) {
                 if (result.error === false) {
                     location.reload();
+                    location.reload();
                     alert(result.message);
                 } else {
                     alert('Xóa lỗi vui lòng thử lại sau');

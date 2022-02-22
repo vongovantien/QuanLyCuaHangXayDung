@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 @include('admin.header')
-<body class="sb-nav-fixed">
-<div class="loader" id="loader">
-</div>
+<body id="background-main" class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="index.html">Cons VNVT</a>
@@ -31,15 +29,14 @@
                 </li>
                 <li>
                     <a class="dropdown-item" href="{{ route('logout') }}"> Log out</a>
-                    {{--                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">--}}
-                    {{--                        {{ csrf_field() }}--}}
-                    {{--                    </form>--}}
                 </li>
             </ul>
         </li>
     </ul>
 </nav>
+</div>
 <div id="layoutSidenav">
+
     @include('admin.sliderbar')
     <div id="layoutSidenav_content">
         @yield('content')

@@ -1,5 +1,6 @@
 @extends('main')
 @section('content')
+@include('admin.alert')
     <h1 class="text-center text-danger">Đăng ký người dùng mới</h1>
     <div class="row pt-5">
         <div class="col-md-7">

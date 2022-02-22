@@ -27,8 +27,6 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
-
-
         $this->validate($request, [
             'email' => 'required|email:filter',
             'password' => 'required'
@@ -63,11 +61,6 @@ class LoginController extends Controller
         $request->validate([
             'email' => 'required|email|exists:users',
         ]);
-
-//        $user = User::whereEmail($request->email)->first();
-//        if (count($user) == 0) {
-//            return redirect()->back()->with(['error' => "Email khong ton tai"]);
-//        }
 
         $token = Str::random(64);
 

@@ -2,8 +2,6 @@
 <html lang="en">
 @include('admin.header')
 <body class="sb-nav-fixed">
-<div class="loader" id="loader">
-</div>
 <div class="container-xxl pt-5">
     @yield('content')
 </div>

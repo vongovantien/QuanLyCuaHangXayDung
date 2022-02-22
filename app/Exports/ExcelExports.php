@@ -15,7 +15,6 @@ class ExcelExports implements FromCollection, WithHeadings
             'Id',
             'Name',
             'Unit',
-            'Origin',
             'Price',
         ];
     }

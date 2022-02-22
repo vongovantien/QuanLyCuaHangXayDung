@@ -11,9 +11,11 @@ use function view;
 
 class UserController extends Controller
 {
-    public function getRole(){
+    public function getRole()
+    {
         return Role::all();
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -121,7 +123,16 @@ class UserController extends Controller
         $user = User::find($id);
 
         try {
+            if ($request->has('confirmed')) {
+                if($request->confirmed == 'on')
+                {
+                    $user->confirmed = 1;
+                }
+            } else {
+                $user->confirmed = 0;
+            }
             $user->name = $request->name;
+            $user->email = $request->email;
             $user->email = $request->email;
             $user->role_id = $request->role;
             $user->save();

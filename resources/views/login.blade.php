@@ -1,6 +1,7 @@
 @extends('main')
 @section('content')
     <h2 class="text-danger text-center">Đăng nhập hệ thống</h2>
+    @include('admin.alert')
     <div class="row">
         <div class="col-md-7">
             <img src="/images/login.png" class="img w-100">

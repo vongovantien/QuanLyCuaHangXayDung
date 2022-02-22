@@ -105,8 +105,8 @@
                 <div class="collapse" id="collapseLayouts8" aria-labelledby="headingOne"
                      data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="layout-static.html">Danh sách xuất hàng</a>
-                        <a class="nav-link" href="layout-sidenav-light.html">Thêm xuất hàng</a>
+                        <a class="nav-link" href="/admin/orders-output/list">Danh sách xuất hàng</a>
+                        <a class="nav-link" href="/admin/orders-output/add">Thêm xuất hàng</a>
                     </nav>
                 </div>
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts10"
